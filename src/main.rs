@@ -1,12 +1,16 @@
 use body::Body;
+use utils::Vector2D;
 
 mod body;
+mod utils;
 
 fn main() {
-    let body1 = Body::new(0.0, 0.0, 1.0, 1.0, 1.0);
-    let body2 = Body::new(1.0, 1.0, 1.0, 1.0, 1.0);
+    let body1 = Body::new(Vector2D::new(0.0, 0.0), Vector2D::new(1.0, 1.0), 1.0);
+    let body2 = Body::new(Vector2D::new(1.0, 1.0), Vector2D::new(1.0, 1.0), 1.0);
     body1.print();
     body2.print();
     let distance = body1.distance(&body2);
-    println!("{distance}");
+    println!("Distance between body1 and body2: {distance}");
+    println!("Velocity of body1: {}", body1.velocity.to_str());
+    println!("Normalized velocity of body1: {}", body1.velocity.normalize().to_str());
 }

@@ -1,27 +1,27 @@
+use crate::utils::Vector2D;
+
 pub struct Body {
-    pub position: [f64; 2],
-    pub velocity: [f64; 2],
+    pub position: Vector2D,
+    pub velocity: Vector2D,
     pub mass: f64,
 }
 
 impl Body {
-    pub fn new(x: f64, y: f64, vx: f64, vy: f64, m: f64) -> Self {
+    pub fn new(position: Vector2D, velocity: Vector2D, mass: f64) -> Self {
         Self {
-            position: [x, y],
-            velocity: [vx, vy],
-            mass: m,
+            position,
+            velocity,
+            mass,
         }
     }
 
     pub fn distance(&self, b: &Body) -> f64 {
-        let dx = self.position[0] - b.position[0];
-        let dy = self.position[1] - b.position[1];
-        (dx * dx + dy * dy).sqrt()
+        (&self.position - &b.position).magnitude()
     }
 
     pub fn print(&self) {
-        println!("Position: [{}, {}]", self.position[0], self.position[1]);
-        println!("Velocity: [{}, {}]", self.velocity[0], self.velocity[1]);
+        println!("Position: {}", self.position.to_str());
+        println!("Velocity: {}", self.velocity.to_str());
         println!("Mass: {}", self.mass)
     }
 }
