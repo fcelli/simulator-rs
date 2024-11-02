@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct Vector2D {
     pub x: f64,
     pub y: f64,
@@ -6,6 +7,10 @@ pub struct Vector2D {
 impl Vector2D {
     pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
+    }
+
+    pub fn zero() -> Self {
+        Self { x: 0.0, y: 0.0 }
     }
 
     pub fn magnitude(&self) -> f64 {
@@ -31,7 +36,7 @@ impl Vector2D {
     }
 }
 
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, AddAssign, Mul, Neg, Sub};
 
 impl Add for Vector2D {
     type Output = Vector2D;
@@ -50,6 +55,13 @@ impl Add for &Vector2D {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
         }
+    }
+}
+
+impl AddAssign for Vector2D {
+    fn add_assign(&mut self, rhs: Vector2D) {
+        self.x += rhs.x;
+        self.y += rhs.y;
     }
 }
 
@@ -89,6 +101,26 @@ impl Mul<f64> for &Vector2D {
         Vector2D {
             x: self.x * scalar,
             y: self.y * scalar,
+        }
+    }
+}
+
+impl Neg for Vector2D {
+    type Output = Vector2D;
+    fn neg(self) -> Self::Output {
+        Vector2D {
+            x: -self.x,
+            y: -self.y,
+        }
+    }
+}
+
+impl Neg for &Vector2D {
+    type Output = Vector2D;
+    fn neg(self) -> Self::Output {
+        Vector2D {
+            x: -self.x,
+            y: -self.y,
         }
     }
 }
