@@ -45,3 +45,30 @@ impl Body {
         println!("Mass: {}", self.mass)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use approx::assert_abs_diff_eq;
+
+    fn setup_test_data() -> (Body, Body) {
+        let b1: Body = Body::new(Vector2D::zero(), Vector2D::zero(), 1.0);
+        let b2: Body = Body::new(Vector2D::new(1.0, 2.0), Vector2D::zero(), 2.0);
+        (b1, b2)
+    }
+
+    #[test]
+    fn test_direction() {
+        let (b1, b2) = setup_test_data();
+        let direction = b1.direction(&b2);
+        assert_eq!(direction.x, 1.0);
+        assert_eq!(direction.y, 2.0);
+    }
+
+    #[test]
+    fn test_distance() {
+        let (b1, b2) = setup_test_data();
+        let distance = b1.distance(&b2);
+        assert_abs_diff_eq!(distance, 2.2360679, epsilon = 1e-7);
+    }
+}

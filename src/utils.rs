@@ -132,7 +132,7 @@ mod tests {
 
     fn setup_test_data() -> (Vector2D, Vector2D, Vector2D) {
         (
-            Vector2D::new(0.0, 0.0),
+            Vector2D::zero(),
             Vector2D::new(3.0, 4.0),
             Vector2D::new(1.0, 2.0),
         )
@@ -166,6 +166,14 @@ mod tests {
     }
 
     #[test]
+    fn test_addassign() {
+        let (mut v1, v2, _) = setup_test_data();
+        v1 += v2;
+        assert_eq!(v1.x, 3.0);
+        assert_eq!(v1.y, 4.0);
+    }
+
+    #[test]
     fn test_sub() {
         let (v1, v2, v3) = setup_test_data();
         let r = v1 - v2 - v3;
@@ -182,5 +190,13 @@ mod tests {
         assert_eq!(r1.y, 0.0);
         assert_eq!(r2.x, 6.0);
         assert_eq!(r2.y, 8.0);
+    }
+
+    #[test]
+    fn test_neg() {
+        let (_, v, _) = setup_test_data();
+        let inv_v = -v;
+        assert_eq!(inv_v.x, -3.0);
+        assert_eq!(inv_v.y, -4.0);
     }
 }
