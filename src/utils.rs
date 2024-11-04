@@ -107,7 +107,7 @@ impl Mul<f64> for &Vector2D {
 
 impl Neg for Vector2D {
     type Output = Vector2D;
-    fn neg(self) -> Self::Output {
+    fn neg(self) -> Vector2D {
         Vector2D {
             x: -self.x,
             y: -self.y,
@@ -117,7 +117,7 @@ impl Neg for Vector2D {
 
 impl Neg for &Vector2D {
     type Output = Vector2D;
-    fn neg(self) -> Self::Output {
+    fn neg(self) -> Vector2D {
         Vector2D {
             x: -self.x,
             y: -self.y,

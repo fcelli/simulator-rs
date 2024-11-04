@@ -31,7 +31,7 @@ impl Body {
         let direction: Vector2D = self.direction(b);
         let r: f64 = direction.magnitude();
         if r == 0.0 {
-            // if the bodies overlap, do not apply any force.
+            // If the bodies overlap, do not apply any force.
             return Vector2D::zero();
         }
         let r2: f64 = r * r;
@@ -42,7 +42,7 @@ impl Body {
     pub fn print(&self) {
         println!("Position: {}", self.position.to_str());
         println!("Velocity: {}", self.velocity.to_str());
-        println!("Mass: {}", self.mass)
+        println!("Mass: {}", self.mass);
     }
 }
 
