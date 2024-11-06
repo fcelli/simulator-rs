@@ -1,4 +1,5 @@
 use crate::body::Body;
+use crate::physics;
 use crate::utils::Vector2D;
 
 pub trait Integrator {
@@ -19,7 +20,7 @@ impl Integrator for EulerIntegrator {
         // Compute forces
         for i in 0..bodies.len() {
             for j in i + 1..bodies.len() {
-                let force: Vector2D = bodies[i].gravitational_force(&bodies[j]);
+                let force: Vector2D = physics::gravitational_force(&bodies[i], &bodies[j]);
                 let neg_force: Vector2D = -&force;
                 forces[i] += force;
                 forces[j] += neg_force;

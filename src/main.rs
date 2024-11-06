@@ -1,5 +1,6 @@
 mod body;
 mod integrator;
+mod physics;
 mod simulation;
 mod utils;
 

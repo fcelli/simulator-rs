@@ -1,5 +1,6 @@
 use crate::body::Body;
 use crate::integrator::Integrator;
+use crate::physics;
 use ggez::{
     self,
     event::EventHandler,
@@ -12,6 +13,7 @@ pub struct Simulation {
     bodies: Vec<Body>,
     integrator: Box<dyn Integrator>,
     dt: f64,
+    cycle_counter: i32,
 }
 
 impl Simulation {
@@ -20,6 +22,7 @@ impl Simulation {
             bodies,
             integrator,
             dt,
+            cycle_counter: 0,
         }
     }
 }
@@ -27,6 +30,12 @@ impl Simulation {
 impl EventHandler for Simulation {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         self.integrator.step(&mut self.bodies, self.dt);
+        let energy: f64 = physics::mechanical_energy(&self.bodies);
+        self.cycle_counter += 1;
+        if self.cycle_counter % 100 == 0 {
+            println!("Mechanical energy: {}", energy);
+            self.cycle_counter = 0
+        }
         Ok(())
     }
 
