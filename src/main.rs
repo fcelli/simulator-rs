@@ -10,7 +10,7 @@ use ggez::{
     conf::{WindowMode, WindowSetup},
     ContextBuilder, GameResult,
 };
-use integrator::{EulerIntegrator, Integrator};
+use integrator::{EulerCromerIntegrator, Integrator};
 use simulation::Simulation;
 use utils::Vector2D;
 
@@ -38,7 +38,7 @@ fn main() -> GameResult {
     }
 
     // Initialize an integrator
-    let integrator: Box<dyn Integrator> = Box::new(EulerIntegrator::new());
+    let integrator: Box<dyn Integrator> = Box::new(EulerCromerIntegrator::new());
 
     // Create the main simulation state
     let dt: f64 = 0.5;
