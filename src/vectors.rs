@@ -1,10 +1,10 @@
 #[derive(Clone)]
-pub struct Vector2D {
+pub struct Vector2 {
     pub x: f64,
     pub y: f64,
 }
 
-impl Vector2D {
+impl Vector2 {
     pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
     }
@@ -38,87 +38,87 @@ impl Vector2D {
 
 use std::ops::{Add, AddAssign, Mul, Neg, Sub};
 
-impl Add for Vector2D {
-    type Output = Vector2D;
-    fn add(self, rhs: Vector2D) -> Vector2D {
-        Vector2D {
+impl Add for Vector2 {
+    type Output = Vector2;
+    fn add(self, rhs: Vector2) -> Vector2 {
+        Vector2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
         }
     }
 }
 
-impl Add for &Vector2D {
-    type Output = Vector2D;
-    fn add(self, rhs: &Vector2D) -> Vector2D {
-        Vector2D {
+impl Add for &Vector2 {
+    type Output = Vector2;
+    fn add(self, rhs: &Vector2) -> Vector2 {
+        Vector2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
         }
     }
 }
 
-impl AddAssign for Vector2D {
-    fn add_assign(&mut self, rhs: Vector2D) {
+impl AddAssign for Vector2 {
+    fn add_assign(&mut self, rhs: Vector2) {
         self.x += rhs.x;
         self.y += rhs.y;
     }
 }
 
-impl Sub for Vector2D {
-    type Output = Vector2D;
-    fn sub(self, rhs: Vector2D) -> Vector2D {
-        Vector2D {
+impl Sub for Vector2 {
+    type Output = Vector2;
+    fn sub(self, rhs: Vector2) -> Vector2 {
+        Vector2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
     }
 }
 
-impl Sub for &Vector2D {
-    type Output = Vector2D;
-    fn sub(self, rhs: &Vector2D) -> Vector2D {
-        Vector2D {
+impl Sub for &Vector2 {
+    type Output = Vector2;
+    fn sub(self, rhs: &Vector2) -> Vector2 {
+        Vector2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
     }
 }
 
-impl Mul<f64> for Vector2D {
-    type Output = Vector2D;
-    fn mul(self, scalar: f64) -> Vector2D {
-        Vector2D {
+impl Mul<f64> for Vector2 {
+    type Output = Vector2;
+    fn mul(self, scalar: f64) -> Vector2 {
+        Vector2 {
             x: self.x * scalar,
             y: self.y * scalar,
         }
     }
 }
 
-impl Mul<f64> for &Vector2D {
-    type Output = Vector2D;
-    fn mul(self, scalar: f64) -> Vector2D {
-        Vector2D {
+impl Mul<f64> for &Vector2 {
+    type Output = Vector2;
+    fn mul(self, scalar: f64) -> Vector2 {
+        Vector2 {
             x: self.x * scalar,
             y: self.y * scalar,
         }
     }
 }
 
-impl Neg for Vector2D {
-    type Output = Vector2D;
-    fn neg(self) -> Vector2D {
-        Vector2D {
+impl Neg for Vector2 {
+    type Output = Vector2;
+    fn neg(self) -> Vector2 {
+        Vector2 {
             x: -self.x,
             y: -self.y,
         }
     }
 }
 
-impl Neg for &Vector2D {
-    type Output = Vector2D;
-    fn neg(self) -> Vector2D {
-        Vector2D {
+impl Neg for &Vector2 {
+    type Output = Vector2;
+    fn neg(self) -> Vector2 {
+        Vector2 {
             x: -self.x,
             y: -self.y,
         }
@@ -130,11 +130,11 @@ mod tests {
     use super::*;
     use approx::assert_abs_diff_eq;
 
-    fn setup_test_data() -> (Vector2D, Vector2D, Vector2D) {
+    fn setup_test_data() -> (Vector2, Vector2, Vector2) {
         (
-            Vector2D::zero(),
-            Vector2D::new(3.0, 4.0),
-            Vector2D::new(1.0, 2.0),
+            Vector2::zero(),
+            Vector2::new(3.0, 4.0),
+            Vector2::new(1.0, 2.0),
         )
     }
 
