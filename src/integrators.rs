@@ -3,44 +3,58 @@ use crate::traits::{Integrator, State};
 
 pub struct EulerIntegrator;
 
-impl<S: State> Integrator<S> for EulerIntegrator {
-    fn step(&self, system: &dyn MechanicalSystem<State = S>, state: &mut S, dt: f64) {
-        let accelerations = system.accelerations(state);
-        let coordinates = state
-            .coordinates()
+impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
+    fn step(&self, system: &mut System, dt: f64) {
+        let accelerations = {
+            let state = system.get_state();
+            system.accelerations(state)
+        };
+
+        let state = system.get_state_mut();
+
+        let new_coordinates = state
+            .get_coordinates()
             .iter()
-            .zip(state.velocities().iter())
+            .zip(state.get_velocities().iter())
             .map(|(x, v)| x + &(v * dt))
             .collect();
-        state.update_coordinates(coordinates);
-        let velocities = state
-            .velocities()
+        state.set_coordinates(new_coordinates);
+
+        let new_velocities = state
+            .get_velocities()
             .iter()
             .zip(accelerations.iter())
             .map(|(v, a)| v + &(a * dt))
             .collect();
-        state.update_velocities(velocities);
+        state.set_velocities(new_velocities);
     }
 }
 
 pub struct EulerCromerIntegrator;
 
-impl<S: State> Integrator<S> for EulerCromerIntegrator {
-    fn step(&self, system: &dyn MechanicalSystem<State = S>, state: &mut S, dt: f64) {
-        let accelerations = system.accelerations(state);
+impl<System: MechanicalSystem> Integrator<System> for EulerCromerIntegrator {
+    fn step(&self, system: &mut System, dt: f64) {
+        let accelerations = {
+            let state = system.get_state();
+            system.accelerations(state)
+        };
+
+        let state = system.get_state_mut();
+
         let velocities = state
-            .velocities()
+            .get_velocities()
             .iter()
             .zip(accelerations.iter())
             .map(|(v, a)| v + &(a * dt))
             .collect();
-        state.update_velocities(velocities);
+        state.set_velocities(velocities);
+
         let coordinates = state
-            .coordinates()
+            .get_coordinates()
             .iter()
-            .zip(state.velocities().iter())
+            .zip(state.get_velocities().iter())
             .map(|(x, v)| x + &(v * dt))
             .collect();
-        state.update_coordinates(coordinates);
+        state.set_coordinates(coordinates);
     }
 }

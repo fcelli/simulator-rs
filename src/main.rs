@@ -1,5 +1,3 @@
-use std::vec;
-
 use ggez::{
     self,
     conf::{WindowMode, WindowSetup},
@@ -44,14 +42,14 @@ fn main() -> GameResult {
         coord.y += DEFAULT_WINDOW_HEIGHT as f64 / 2.0;
     }
 
-    let system = Box::new(NBodySystem);
+    let system = NBodySystem { state };
 
     // Initialize an integrator
-    let integrator: Box<dyn Integrator<NBodyState>> = Box::new(EulerCromerIntegrator);
+    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(EulerCromerIntegrator);
 
     // Create the main simulation state
     let dt: f64 = 0.5;
-    let state = Simulation::new(state, system, integrator, dt);
+    let state = Simulation::new(system, integrator, dt);
 
     // Run the simulation
     ggez::event::run(ctx, event_loop, state);

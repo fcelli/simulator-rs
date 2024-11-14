@@ -1,3 +1,7 @@
+use crate::{
+    systems::NBodySystem,
+    traits::{Integrator, MechanicalSystem},
+};
 use ggez::{
     self,
     event::EventHandler,
@@ -6,27 +10,15 @@ use ggez::{
     Context, GameResult,
 };
 
-use crate::{
-    systems::NBodyState,
-    traits::{Integrator, MechanicalSystem, State},
-};
-
-pub struct Simulation<S> {
-    state: S,
-    system: Box<dyn MechanicalSystem<State = S>>,
-    integrator: Box<dyn Integrator<S>>,
+pub struct Simulation<System: MechanicalSystem> {
+    system: System,
+    integrator: Box<dyn Integrator<System>>,
     dt: f64,
 }
 
-impl<S: State> Simulation<S> {
-    pub fn new(
-        initial_state: S,
-        system: Box<dyn MechanicalSystem<State = S>>,
-        integrator: Box<dyn Integrator<S>>,
-        dt: f64,
-    ) -> Self {
+impl<System: MechanicalSystem> Simulation<System> {
+    pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
         Self {
-            state: initial_state,
             system,
             integrator,
             dt,
@@ -34,10 +26,9 @@ impl<S: State> Simulation<S> {
     }
 }
 
-impl EventHandler for Simulation<NBodyState> {
+impl EventHandler for Simulation<NBodySystem> {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        self.integrator
-            .step(&*self.system, &mut self.state, self.dt);
+        self.integrator.step(&mut self.system, self.dt);
         Ok(())
     }
 
@@ -45,7 +36,7 @@ impl EventHandler for Simulation<NBodyState> {
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
 
-        for pos in &self.state.coordinates {
+        for pos in &self.system.state.coordinates {
             let x: f32 = pos.x as f32;
             let y: f32 = pos.y as f32;
             let circle = Mesh::new_circle(
