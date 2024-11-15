@@ -1,13 +1,12 @@
+use crate::traits::Integrator;
 use crate::traits::MechanicalSystem;
-use crate::traits::{Integrator, State};
 
 pub struct EulerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = system.accelerations();
-        let state = system.get_state_mut();
-        let coordinates = state.get_coordinates_mut();
+        let accelerations = system.calculate_accelerations();
+        let coordinates = system.get_coordinates_mut();
 
         // update positions
         coordinates
@@ -26,9 +25,8 @@ pub struct EulerCromerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerCromerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = system.accelerations();
-        let state = system.get_state_mut();
-        let coordinates = state.get_coordinates_mut();
+        let accelerations = system.calculate_accelerations();
+        let coordinates = system.get_coordinates_mut();
 
         // update velocities
         coordinates
