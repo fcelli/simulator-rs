@@ -45,7 +45,8 @@ impl MechanicalSystem for NBodySystem {
         &mut self.state
     }
 
-    fn accelerations(&self, state: &Self::State) -> Vec<Vector2> {
+    fn accelerations(&self) -> Vec<Vector2> {
+        let state = &self.state;
         let mut accelerations = vec![Vector2::zero(); state.coordinates.len()];
         for i in 0..state.coordinates.len() {
             for j in i + 1..state.coordinates.len() {

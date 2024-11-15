@@ -9,7 +9,7 @@ pub trait MechanicalSystem {
     type State: State;
     fn get_state(&self) -> &Self::State;
     fn get_state_mut(&mut self) -> &mut Self::State;
-    fn accelerations(&self, state: &Self::State) -> Vec<Vector2>;
+    fn accelerations(&self) -> Vec<Vector2>;
 }
 
 pub trait Integrator<System: MechanicalSystem> {

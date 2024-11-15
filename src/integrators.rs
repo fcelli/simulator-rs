@@ -5,8 +5,9 @@ pub struct EulerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = system.accelerations(system.get_state());
-        let coordinates = system.get_state_mut().get_coordinates_mut();
+        let accelerations = system.accelerations();
+        let state = system.get_state_mut();
+        let coordinates = state.get_coordinates_mut();
 
         // update positions
         coordinates
@@ -25,8 +26,9 @@ pub struct EulerCromerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerCromerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = system.accelerations(system.get_state());
-        let coordinates = system.get_state_mut().get_coordinates_mut();
+        let accelerations = system.accelerations();
+        let state = system.get_state_mut();
+        let coordinates = state.get_coordinates_mut();
 
         // update velocities
         coordinates
