@@ -6,7 +6,7 @@ use ggez::{
 use nbody::{
     integrators::EulerCromerIntegrator,
     simulation::Simulation,
-    systems::{NBodyState, NBodySystem},
+    systems::{Coordinates, NBodyState, NBodySystem},
     traits::Integrator,
     vectors::Vector2,
 };
@@ -22,27 +22,24 @@ fn main() -> GameResult {
         .unwrap();
 
     // Create some bodies for the simulation
-    let mut state = NBodyState {
+    let mut initial_state = NBodyState {
         coordinates: vec![
-            Vector2::new(0.0, -50.0),
-            Vector2::new(0.0, 50.0),
-            Vector2::new(0.0, 150.0),
-        ],
-        velocities: vec![
-            Vector2::new(2.0, 0.0),
-            Vector2::new(-2.0, 0.0),
-            Vector2::new(4.0, 0.0),
+            Coordinates::new(Vector2::new(0.0, -50.0), Vector2::new(2.0, 0.0)),
+            Coordinates::new(Vector2::new(0.0, 50.0), Vector2::new(-2.0, 0.0)),
+            Coordinates::new(Vector2::new(0.0, 150.0), Vector2::new(4.0, 0.0)),
         ],
         masses: vec![1000.0, 1000.0, 0.001],
     };
 
     // Redefine positions to be relative to the centre of the screen
-    for coord in state.coordinates.iter_mut() {
-        coord.x += DEFAULT_WINDOW_WIDTH as f64 / 2.0;
-        coord.y += DEFAULT_WINDOW_HEIGHT as f64 / 2.0;
+    for coord in initial_state.coordinates.iter_mut() {
+        coord.position.x += DEFAULT_WINDOW_WIDTH as f64 / 2.0;
+        coord.position.y += DEFAULT_WINDOW_HEIGHT as f64 / 2.0;
     }
 
-    let system = NBodySystem { state };
+    let system = NBodySystem {
+        state: initial_state,
+    };
 
     // Initialize an integrator
     let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(EulerCromerIntegrator);

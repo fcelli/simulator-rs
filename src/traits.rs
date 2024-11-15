@@ -1,10 +1,8 @@
-use crate::vectors::Vector2;
+use crate::{systems::Coordinates, vectors::Vector2};
 
 pub trait State {
-    fn get_coordinates(&self) -> &Vec<Vector2>;
-    fn get_velocities(&self) -> &Vec<Vector2>;
-    fn set_coordinates(&mut self, coordinates: Vec<Vector2>);
-    fn set_velocities(&mut self, velocities: Vec<Vector2>);
+    fn get_coordinates(&self) -> &Vec<Coordinates>;
+    fn get_coordinates_mut(&mut self) -> &mut Vec<Coordinates>;
 }
 
 pub trait MechanicalSystem {

@@ -36,9 +36,9 @@ impl EventHandler for Simulation<NBodySystem> {
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
 
-        for pos in &self.system.state.coordinates {
-            let x: f32 = pos.x as f32;
-            let y: f32 = pos.y as f32;
+        for coord in &self.system.state.coordinates {
+            let x: f32 = coord.position.x as f32;
+            let y: f32 = coord.position.y as f32;
             let circle = Mesh::new_circle(
                 ctx,
                 graphics::DrawMode::fill(),

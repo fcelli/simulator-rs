@@ -5,28 +5,19 @@ pub struct EulerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = {
-            let state = system.get_state();
-            system.accelerations(state)
-        };
+        let accelerations = system.accelerations(system.get_state());
+        let coordinates = system.get_state_mut().get_coordinates_mut();
 
-        let state = system.get_state_mut();
+        // update positions
+        coordinates
+            .iter_mut()
+            .for_each(|coord| coord.position += &coord.velocity * dt);
 
-        let new_coordinates = state
-            .get_coordinates()
-            .iter()
-            .zip(state.get_velocities().iter())
-            .map(|(x, v)| x + &(v * dt))
-            .collect();
-        state.set_coordinates(new_coordinates);
-
-        let new_velocities = state
-            .get_velocities()
-            .iter()
+        // update velocities
+        coordinates
+            .iter_mut()
             .zip(accelerations.iter())
-            .map(|(v, a)| v + &(a * dt))
-            .collect();
-        state.set_velocities(new_velocities);
+            .for_each(|(coord, a)| coord.velocity += a * dt);
     }
 }
 
@@ -34,27 +25,18 @@ pub struct EulerCromerIntegrator;
 
 impl<System: MechanicalSystem> Integrator<System> for EulerCromerIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
-        let accelerations = {
-            let state = system.get_state();
-            system.accelerations(state)
-        };
+        let accelerations = system.accelerations(system.get_state());
+        let coordinates = system.get_state_mut().get_coordinates_mut();
 
-        let state = system.get_state_mut();
-
-        let velocities = state
-            .get_velocities()
-            .iter()
+        // update velocities
+        coordinates
+            .iter_mut()
             .zip(accelerations.iter())
-            .map(|(v, a)| v + &(a * dt))
-            .collect();
-        state.set_velocities(velocities);
+            .for_each(|(coord, a)| coord.velocity += a * dt);
 
-        let coordinates = state
-            .get_coordinates()
-            .iter()
-            .zip(state.get_velocities().iter())
-            .map(|(x, v)| x + &(v * dt))
-            .collect();
-        state.set_coordinates(coordinates);
+        // update positions
+        coordinates
+            .iter_mut()
+            .for_each(|coord| coord.position += &coord.velocity * dt);
     }
 }

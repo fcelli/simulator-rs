@@ -4,27 +4,29 @@ use crate::{
     vectors::Vector2,
 };
 
+pub struct Coordinates {
+    pub position: Vector2,
+    pub velocity: Vector2,
+}
+
+impl Coordinates {
+    pub fn new(position: Vector2, velocity: Vector2) -> Self {
+        Coordinates { position, velocity }
+    }
+}
+
 pub struct NBodyState {
-    pub coordinates: Vec<Vector2>,
-    pub velocities: Vec<Vector2>,
+    pub coordinates: Vec<Coordinates>,
     pub masses: Vec<f64>,
 }
 
 impl State for NBodyState {
-    fn get_coordinates(&self) -> &Vec<Vector2> {
+    fn get_coordinates(&self) -> &Vec<Coordinates> {
         &self.coordinates
     }
 
-    fn get_velocities(&self) -> &Vec<Vector2> {
-        &self.velocities
-    }
-
-    fn set_coordinates(&mut self, coordinates: Vec<Vector2>) {
-        self.coordinates = coordinates;
-    }
-
-    fn set_velocities(&mut self, velocities: Vec<Vector2>) {
-        self.velocities = velocities;
+    fn get_coordinates_mut(&mut self) -> &mut Vec<Coordinates> {
+        &mut self.coordinates
     }
 }
 
@@ -47,9 +49,9 @@ impl MechanicalSystem for NBodySystem {
         let mut accelerations = vec![Vector2::zero(); state.coordinates.len()];
         for i in 0..state.coordinates.len() {
             for j in i + 1..state.coordinates.len() {
-                let pos_i = &state.coordinates[i];
+                let pos_i = &state.coordinates[i].position;
                 let mass_i = &state.masses[i];
-                let pos_j = &state.coordinates[j];
+                let pos_j = &state.coordinates[j].position;
                 let mass_j = &state.masses[j];
                 let force = gravitational_force(pos_i, mass_i, pos_j, mass_j);
                 let neg_force = -&force;
