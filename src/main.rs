@@ -4,10 +4,9 @@ use ggez::{
     ContextBuilder, GameResult,
 };
 use nbody::{
-    integrators::EulerCromerIntegrator,
+    integrators::{EulerCromerIntegrator, Integrator},
     simulation::Simulation,
     systems::{Coordinates, NBodySystem},
-    traits::Integrator,
     vectors::Vector2,
 };
 

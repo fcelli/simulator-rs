@@ -1,6 +1,6 @@
 use crate::{
-    systems::NBodySystem,
-    traits::{Integrator, MechanicalSystem},
+    integrators::Integrator,
+    systems::{MechanicalSystem, NBodySystem},
 };
 use ggez::{
     self,

@@ -1,15 +1,6 @@
-use crate::{physics::gravitational_force, traits::MechanicalSystem, vectors::Vector2};
+use crate::{physics::gravitational_force, vectors::Vector2};
 
-pub struct Coordinates {
-    pub position: Vector2,
-    pub velocity: Vector2,
-}
-
-impl Coordinates {
-    pub fn new(position: Vector2, velocity: Vector2) -> Self {
-        Coordinates { position, velocity }
-    }
-}
+use super::{Coordinates, MechanicalSystem};
 
 pub struct NBodySystem {
     pub coordinates: Vec<Coordinates>,
