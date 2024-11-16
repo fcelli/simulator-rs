@@ -1,6 +1,7 @@
-use crate::body::Body;
-use crate::integrator::Integrator;
-use crate::physics;
+use crate::{
+    integrators::Integrator,
+    systems::{MechanicalSystem, NBodySystem},
+};
 use ggez::{
     self,
     event::EventHandler,
@@ -9,33 +10,25 @@ use ggez::{
     Context, GameResult,
 };
 
-pub struct Simulation {
-    bodies: Vec<Body>,
-    integrator: Box<dyn Integrator>,
+pub struct Simulation<System: MechanicalSystem> {
+    system: System,
+    integrator: Box<dyn Integrator<System>>,
     dt: f64,
-    cycle_counter: i32,
 }
 
-impl Simulation {
-    pub fn new(bodies: Vec<Body>, integrator: Box<dyn Integrator>, dt: f64) -> Self {
+impl<System: MechanicalSystem> Simulation<System> {
+    pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
         Self {
-            bodies,
+            system,
             integrator,
             dt,
-            cycle_counter: 0,
         }
     }
 }
 
-impl EventHandler for Simulation {
+impl EventHandler for Simulation<NBodySystem> {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        self.integrator.step(&mut self.bodies, self.dt);
-        let energy: f64 = physics::mechanical_energy(&self.bodies);
-        self.cycle_counter += 1;
-        if self.cycle_counter % 100 == 0 {
-            println!("Mechanical energy: {}", energy);
-            self.cycle_counter = 0
-        }
+        self.integrator.step(&mut self.system, self.dt);
         Ok(())
     }
 
@@ -43,9 +36,9 @@ impl EventHandler for Simulation {
         let mut canvas =
             graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
 
-        for body in &self.bodies {
-            let x: f32 = body.position.x as f32;
-            let y: f32 = body.position.y as f32;
+        for coord in &self.system.coordinates {
+            let x: f32 = coord.position.x as f32;
+            let y: f32 = coord.position.y as f32;
             let circle = Mesh::new_circle(
                 ctx,
                 graphics::DrawMode::fill(),
