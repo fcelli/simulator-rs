@@ -1,7 +1,11 @@
+use super::Integrator;
 use crate::systems::{Coordinates, MechanicalSystem};
 
-use super::Integrator;
-
+/// Runge-Kutta integrator.
+///
+/// x_{i + 1} = x_i + (1 / 6) * (k1 + 2 * k2 + 2 * k3 + k4)
+///
+/// v_{i + 1} = v_i + (1 / 6) * (k1 + 2 * k2 + 2 * k3 + k4)
 pub struct RK4Integrator;
 
 impl RK4Integrator {
@@ -31,8 +35,8 @@ impl RK4Integrator {
             .zip(initial.iter())
             .zip(k.iter())
             .for_each(|((coord, initial), k)| {
-                coord.position = initial.position.clone() + k.position.clone() * dt;
-                coord.velocity = initial.velocity.clone() + k.velocity.clone() * dt;
+                coord.position = initial.position.clone() + &k.position * dt;
+                coord.velocity = initial.velocity.clone() + &k.velocity * dt;
             });
     }
 }
