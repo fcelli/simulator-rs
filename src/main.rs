@@ -4,7 +4,7 @@ use ggez::{
     ContextBuilder, GameResult,
 };
 use simulator_rs::{
-    integrators::{Integrator, RK4Integrator},
+    integrators::{Integrator, LeapfrogIntegrator},
     simulation::Simulation,
     systems::{Coordinates, NBodySystem},
     vectors::Vector2,
@@ -37,7 +37,7 @@ fn main() -> GameResult {
     }
 
     // Initialize an integrator
-    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(RK4Integrator);
+    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(LeapfrogIntegrator);
 
     // Create the main simulation state
     let dt: f64 = 0.5;
