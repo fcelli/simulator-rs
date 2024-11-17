@@ -4,7 +4,7 @@ use ggez::{
     ContextBuilder, GameResult,
 };
 use nbody::{
-    integrators::{EulerCromerIntegrator, Integrator},
+    integrators::{Integrator, RK4Integrator},
     simulation::Simulation,
     systems::{Coordinates, NBodySystem},
     vectors::Vector2,
@@ -14,8 +14,8 @@ const DEFAULT_WINDOW_HEIGHT: f32 = 960f32;
 const DEFAULT_WINDOW_WIDTH: f32 = 1440f32;
 
 fn main() -> GameResult {
-    let (ctx, event_loop) = ContextBuilder::new("N-Body Simulation", "fcelli")
-        .window_setup(WindowSetup::default().title("N-Body Simulation"))
+    let (ctx, event_loop) = ContextBuilder::new("simulator-rs", "fcelli")
+        .window_setup(WindowSetup::default().title("simulator-rs"))
         .window_mode(WindowMode::default().dimensions(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT))
         .build()
         .unwrap();
@@ -37,7 +37,7 @@ fn main() -> GameResult {
     }
 
     // Initialize an integrator
-    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(EulerCromerIntegrator);
+    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(RK4Integrator);
 
     // Create the main simulation state
     let dt: f64 = 0.5;

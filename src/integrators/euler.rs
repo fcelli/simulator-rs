@@ -1,6 +1,5 @@
-use crate::systems::MechanicalSystem;
-
 use super::Integrator;
+use crate::systems::MechanicalSystem;
 
 pub struct EulerIntegrator;
 
@@ -9,12 +8,12 @@ impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
         let accelerations = system.calculate_accelerations();
         let coordinates = system.get_coordinates_mut();
 
-        // update positions
+        // Update positions
         coordinates
             .iter_mut()
             .for_each(|coord| coord.position += &coord.velocity * dt);
 
-        // update velocities
+        // Update velocities
         coordinates
             .iter_mut()
             .zip(accelerations.iter())

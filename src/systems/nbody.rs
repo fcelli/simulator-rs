@@ -1,6 +1,5 @@
-use crate::{physics::gravitational_force, vectors::Vector2};
-
 use super::{Coordinates, MechanicalSystem};
+use crate::{physics::gravitational_force, vectors::Vector2};
 
 pub struct NBodySystem {
     pub coordinates: Vec<Coordinates>,
