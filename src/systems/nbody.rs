@@ -4,12 +4,21 @@ use crate::{
     vectors::Vector2,
 };
 
+#[derive(Default)]
 pub struct NBodySystem {
-    pub coordinates: Vec<Coordinates>,
-    pub masses: Vec<f64>,
+    coordinates: Vec<Coordinates>,
+    masses: Vec<f64>,
 }
 
 impl NBodySystem {
+    pub fn add_body(&mut self, x: f64, y: f64, vx: f64, vy: f64, m: f64) {
+        let position = Vector2::new(x, y);
+        let velocity = Vector2::new(vx, vy);
+        let coord = Coordinates::new(position, velocity);
+        self.coordinates.push(coord);
+        self.masses.push(m);
+    }
+
     pub fn mechanical_energy(&self) -> f64 {
         let mut mechanical_energy = 0.0;
         for i in 0..self.coordinates.len() {
