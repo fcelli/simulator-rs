@@ -1,9 +1,9 @@
-use crate::vectors::Vector2;
-
 mod nbody;
 
+use crate::vectors::Vector2;
 pub use nbody::NBodySystem;
 
+#[derive(Clone)]
 pub struct Coordinates {
     pub position: Vector2,
     pub velocity: Vector2,
