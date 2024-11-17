@@ -1,9 +1,30 @@
 use super::{Coordinates, MechanicalSystem};
-use crate::{physics::gravitational_force, vectors::Vector2};
+use crate::{
+    physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
+    vectors::Vector2,
+};
 
 pub struct NBodySystem {
     pub coordinates: Vec<Coordinates>,
     pub masses: Vec<f64>,
+}
+
+impl NBodySystem {
+    pub fn mechanical_energy(&self) -> f64 {
+        let mut mechanical_energy = 0.0;
+        for i in 0..self.coordinates.len() {
+            let m_i = &self.masses[i];
+            let pos_i = &self.coordinates[i].position;
+            let vel_i = &self.coordinates[i].velocity;
+            mechanical_energy += kinetic_energy(m_i, vel_i);
+            for j in i + 1..self.coordinates.len() {
+                let m_j = &self.masses[j];
+                let pos_j = &self.coordinates[j].position;
+                mechanical_energy += gravitational_potential_energy(pos_i, m_i, pos_j, m_j);
+            }
+        }
+        mechanical_energy
+    }
 }
 
 impl MechanicalSystem for NBodySystem {
