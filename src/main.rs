@@ -3,7 +3,7 @@ use ggez::{
     conf::{WindowMode, WindowSetup},
     ContextBuilder, GameResult,
 };
-use nbody::{
+use simulator_rs::{
     integrators::{Integrator, RK4Integrator},
     simulation::Simulation,
     systems::{Coordinates, NBodySystem},
