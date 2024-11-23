@@ -1,6 +1,6 @@
 use crate::{
     integrators::Integrator,
-    systems::{Draw, MechanicalSystem},
+    systems::{MechanicalSystem, NBodySystem},
 };
 
 pub struct Simulation<System: MechanicalSystem> {
@@ -9,7 +9,7 @@ pub struct Simulation<System: MechanicalSystem> {
     dt: f64,
 }
 
-impl<System: MechanicalSystem + Draw> Simulation<System> {
+impl<System: MechanicalSystem> Simulation<System> {
     pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
         Self {
             system,
@@ -21,8 +21,24 @@ impl<System: MechanicalSystem + Draw> Simulation<System> {
     pub fn update(&mut self) {
         self.integrator.step(&mut self.system, self.dt);
     }
+}
 
-    pub fn draw(&self, buffer: &mut Vec<u32>, width: usize, height: usize) {
-        self.system.draw(buffer, width, height);
+pub trait Render {
+    fn render(&self, buffer: &mut Vec<u32>, width: usize, height: usize);
+}
+
+impl Render for Simulation<NBodySystem> {
+    fn render(&self, buffer: &mut Vec<u32>, width: usize, height: usize) {
+        // Clear the buffer
+        buffer.fill(0);
+
+        // Draw each body as a white pixel
+        for coord in self.system.get_coordinates() {
+            let x = coord.position.x as usize;
+            let y = coord.position.y as usize;
+            if x < width && y < height {
+                buffer[y * width + x] = 0xFFFFFF;
+            }
+        }
     }
 }

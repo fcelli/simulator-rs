@@ -3,7 +3,7 @@ use std::time::{Duration, Instant};
 use minifb::{Key, Window, WindowOptions};
 use simulator_rs::{
     integrators::{Integrator, LeapfrogIntegrator},
-    simulation::Simulation,
+    simulation::{Render, Simulation},
     systems::{MechanicalSystem, NBodySystem},
 };
 
@@ -50,11 +50,11 @@ fn main() {
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let start_time = Instant::now();
 
-        // Update simulation state
+        // Update simulation
         simulation.update();
 
-        // Draw simulation state to window
-        simulation.draw(&mut buffer, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        // Render simulation
+        simulation.render(&mut buffer, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
         // Update the window with the new frame
         window
