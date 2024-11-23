@@ -1,5 +1,6 @@
 use crate::{
     integrators::Integrator,
+    rendering::Window,
     systems::{MechanicalSystem, NBodySystem},
 };
 
@@ -24,13 +25,19 @@ impl<System: MechanicalSystem> Simulation<System> {
 }
 
 pub trait Render {
-    fn render(&self, buffer: &mut Vec<u32>, width: usize, height: usize);
+    fn render(&self, window: &mut Window);
 }
 
 impl Render for Simulation<NBodySystem> {
-    fn render(&self, buffer: &mut Vec<u32>, width: usize, height: usize) {
+    fn render(&self, window: &mut Window) {
         // Clear the buffer
-        buffer.fill(0);
+        window.clear(0);
+
+        // Get window size
+        let (width, height) = window.get_size();
+
+        // Get the buffer
+        let buffer = window.get_buffer_mut();
 
         // Draw each body as a white pixel
         for coord in self.system.get_coordinates() {

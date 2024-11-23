@@ -1,8 +1,8 @@
 use std::time::{Duration, Instant};
 
-use minifb::{Key, Window, WindowOptions};
 use simulator_rs::{
     integrators::{Integrator, LeapfrogIntegrator},
+    rendering::Window,
     simulation::{Render, Simulation},
     systems::{MechanicalSystem, NBodySystem},
 };
@@ -33,33 +33,17 @@ fn main() {
     let mut simulation = Simulation::new(system, integrator, dt);
 
     // Initialize the window
-    let mut window = Window::new(
-        "simulator_rs",
-        DEFAULT_WINDOW_WIDTH,
-        DEFAULT_WINDOW_HEIGHT,
-        WindowOptions::default(),
-    )
-    .unwrap_or_else(|e| {
-        panic!("{}", e);
-    });
-
-    // Create the pixel buffer
-    let mut buffer = vec![0; DEFAULT_WINDOW_WIDTH * DEFAULT_WINDOW_HEIGHT];
+    let mut window = Window::new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
     // Run the simulation loop
-    while window.is_open() && !window.is_key_down(Key::Escape) {
+    while window.update() {
         let start_time = Instant::now();
 
         // Update simulation
         simulation.update();
 
         // Render simulation
-        simulation.render(&mut buffer, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-
-        // Update the window with the new frame
-        window
-            .update_with_buffer(&buffer, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
-            .unwrap();
+        simulation.render(&mut window);
 
         // Control simulation speed
         let frame_time = Instant::now().duration_since(start_time);
