@@ -1,6 +1,6 @@
 mod nbody;
 
-use crate::vectors::Vector2;
+use super::vector2::Vector2;
 pub use nbody::NBodySystem;
 
 #[derive(Clone)]
@@ -15,7 +15,7 @@ impl Coordinates {
     }
 }
 
-pub trait MechanicalSystem {
+pub trait System {
     fn get_coordinates(&self) -> &Vec<Coordinates>;
     fn get_coordinates_mut(&mut self) -> &mut Vec<Coordinates>;
     fn calculate_accelerations(&self) -> Vec<Vector2>;
