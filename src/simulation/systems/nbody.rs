@@ -1,4 +1,4 @@
-use super::{Coordinates, MechanicalSystem};
+use super::{Coordinates, System};
 use crate::simulation::{
     physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
     vector2::Vector2,
@@ -36,7 +36,7 @@ impl NBodySystem {
     }
 }
 
-impl MechanicalSystem for NBodySystem {
+impl System for NBodySystem {
     fn get_coordinates(&self) -> &Vec<Coordinates> {
         &self.coordinates
     }

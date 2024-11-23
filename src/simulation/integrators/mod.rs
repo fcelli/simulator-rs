@@ -3,12 +3,12 @@ mod euler_cromer;
 mod leapfrog;
 mod rk4;
 
-use super::systems::MechanicalSystem;
+use super::systems::System;
 pub use euler::EulerIntegrator;
 pub use euler_cromer::EulerCromerIntegrator;
 pub use leapfrog::LeapfrogIntegrator;
 pub use rk4::RK4Integrator;
 
-pub trait Integrator<System: MechanicalSystem> {
-    fn step(&self, system: &mut System, dt: f64);
+pub trait Integrator<S: System> {
+    fn step(&self, system: &mut S, dt: f64);
 }

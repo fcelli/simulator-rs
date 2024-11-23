@@ -3,7 +3,7 @@ use simulator_rs::{
     simulation::{
         integrators::{Integrator, LeapfrogIntegrator},
         render::Render,
-        systems::{MechanicalSystem, NBodySystem},
+        systems::{NBodySystem, System},
         Simulation,
     },
 };

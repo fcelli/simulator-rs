@@ -5,16 +5,16 @@ pub mod systems;
 pub mod vector2;
 
 use integrators::Integrator;
-use systems::MechanicalSystem;
+use systems::System;
 
-pub struct Simulation<System: MechanicalSystem> {
-    system: System,
-    integrator: Box<dyn Integrator<System>>,
+pub struct Simulation<S: System> {
+    system: S,
+    integrator: Box<dyn Integrator<S>>,
     dt: f64,
 }
 
-impl<System: MechanicalSystem> Simulation<System> {
-    pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
+impl<S: System> Simulation<S> {
+    pub fn new(system: S, integrator: Box<dyn Integrator<S>>, dt: f64) -> Self {
         Self {
             system,
             integrator,

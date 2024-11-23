@@ -1,5 +1,5 @@
 use super::{
-    systems::{MechanicalSystem, NBodySystem},
+    systems::{NBodySystem, System},
     Simulation,
 };
 use crate::rendering::Window;
