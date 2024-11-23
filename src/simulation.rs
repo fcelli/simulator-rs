@@ -1,13 +1,6 @@
 use crate::{
     integrators::Integrator,
-    systems::{MechanicalSystem, NBodySystem},
-};
-use ggez::{
-    self,
-    event::EventHandler,
-    glam::Vec2,
-    graphics::{self, Color, DrawParam, Mesh},
-    Context, GameResult,
+    systems::{Draw, MechanicalSystem},
 };
 
 pub struct Simulation<System: MechanicalSystem> {
@@ -16,7 +9,7 @@ pub struct Simulation<System: MechanicalSystem> {
     dt: f64,
 }
 
-impl<System: MechanicalSystem> Simulation<System> {
+impl<System: MechanicalSystem + Draw> Simulation<System> {
     pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
         Self {
             system,
@@ -24,32 +17,12 @@ impl<System: MechanicalSystem> Simulation<System> {
             dt,
         }
     }
-}
 
-impl EventHandler for Simulation<NBodySystem> {
-    fn update(&mut self, _ctx: &mut Context) -> GameResult {
+    pub fn update(&mut self) {
         self.integrator.step(&mut self.system, self.dt);
-        Ok(())
     }
 
-    fn draw(&mut self, ctx: &mut Context) -> GameResult {
-        let mut canvas =
-            graphics::Canvas::from_frame(ctx, graphics::Color::from([0.1, 0.2, 0.3, 1.0]));
-
-        for coord in self.system.get_coordinates() {
-            let x: f32 = coord.position.x as f32;
-            let y: f32 = coord.position.y as f32;
-            let circle = Mesh::new_circle(
-                ctx,
-                graphics::DrawMode::fill(),
-                Vec2::new(x, y),
-                5.0,
-                0.1,
-                Color::WHITE,
-            )?;
-            canvas.draw(&circle, DrawParam::default());
-        }
-        canvas.finish(ctx)?;
-        Ok(())
+    pub fn draw(&self, buffer: &mut Vec<u32>, width: usize, height: usize) {
+        self.system.draw(buffer, width, height);
     }
 }

@@ -1,4 +1,4 @@
-use super::{Coordinates, MechanicalSystem};
+use super::{Coordinates, Draw, MechanicalSystem};
 use crate::{
     physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
     vectors::Vector2,
@@ -60,5 +60,21 @@ impl MechanicalSystem for NBodySystem {
             }
         }
         accelerations
+    }
+}
+
+impl Draw for NBodySystem {
+    fn draw(&self, buffer: &mut Vec<u32>, width: usize, height: usize) {
+        // Clear the buffer
+        buffer.fill(0);
+
+        // Draw each body as a white pixel
+        for coord in self.get_coordinates() {
+            let x = coord.position.x as usize;
+            let y = coord.position.y as usize;
+            if x < width && y < height {
+                buffer[y * width + x] = 0xFFFFFF;
+            }
+        }
     }
 }

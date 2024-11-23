@@ -20,3 +20,7 @@ pub trait MechanicalSystem {
     fn get_coordinates_mut(&mut self) -> &mut Vec<Coordinates>;
     fn calculate_accelerations(&self) -> Vec<Vector2>;
 }
+
+pub trait Draw {
+    fn draw(&self, buffer: &mut Vec<u32>, width: usize, height: usize);
+}

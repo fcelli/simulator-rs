@@ -23,7 +23,7 @@ pub fn kinetic_energy(m: &f64, vel: &Vector2) -> f64 {
     0.5 * m * v2
 }
 
-/// Compute the gravitational potential energy between a body of mass `m1` at position `pos1`
+/// Computes the gravitational potential energy between a body of mass `m1` at position `pos1`
 /// and a body with mass `m2` at position `pos2`.
 pub fn gravitational_potential_energy(pos1: &Vector2, m1: &f64, pos2: &Vector2, m2: &f64) -> f64 {
     let r = (pos2 - pos1).magnitude();
