@@ -1,5 +1,5 @@
 use super::Integrator;
-use crate::{systems::MechanicalSystem, vectors::Vector2};
+use crate::simulation::{systems::MechanicalSystem, vector2::Vector2};
 
 /// Euler integrator.
 ///

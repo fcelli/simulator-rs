@@ -1,14 +1,16 @@
 use super::Integrator;
-use crate::{systems::MechanicalSystem, vectors::Vector2};
+use crate::simulation::{systems::MechanicalSystem, vector2::Vector2};
 
-/// Euler-Cromer integrator.
+/// Leapfrog integrator.
 ///
-/// v_{i + 1} = v_i + a_i * dt
+/// v_{i + 1 / 2} = v_i + a_i * dt / 2
 ///
-/// x_{i + 1} = x_i + v_{i + 1} * dt
-pub struct EulerCromerIntegrator;
+/// x_{i + 1} = x_i + v_{i + 1 / 2} * dt
+///
+/// v_{i + 1} = v_{i + 1 / 2} + a_{i + 1} * dt / 2
+pub struct LeapfrogIntegrator;
 
-impl EulerCromerIntegrator {
+impl LeapfrogIntegrator {
     fn update_positions<System: MechanicalSystem>(&self, system: &mut System, dt: f64) {
         system
             .get_coordinates_mut()
@@ -30,10 +32,13 @@ impl EulerCromerIntegrator {
     }
 }
 
-impl<System: MechanicalSystem> Integrator<System> for EulerCromerIntegrator {
+impl<System: MechanicalSystem> Integrator<System> for LeapfrogIntegrator {
     fn step(&self, system: &mut System, dt: f64) {
+        let dt_div2 = dt / 2.0;
         let accelerations = system.calculate_accelerations();
-        self.update_velocities(system, &accelerations, dt);
+        self.update_velocities(system, &accelerations, dt_div2);
         self.update_positions(system, dt);
+        let accelerations = system.calculate_accelerations();
+        self.update_velocities(system, &accelerations, dt_div2);
     }
 }

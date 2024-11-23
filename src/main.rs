@@ -1,11 +1,13 @@
-use std::time::{Duration, Instant};
-
 use simulator_rs::{
-    integrators::{Integrator, LeapfrogIntegrator},
     rendering::Window,
-    simulation::{Render, Simulation},
-    systems::{MechanicalSystem, NBodySystem},
+    simulation::{
+        integrators::{Integrator, LeapfrogIntegrator},
+        render::Render,
+        systems::{MechanicalSystem, NBodySystem},
+        Simulation,
+    },
 };
+use std::time::{Duration, Instant};
 
 const DEFAULT_WINDOW_WIDTH: usize = 800;
 const DEFAULT_WINDOW_HEIGHT: usize = 600;

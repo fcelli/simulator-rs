@@ -1,6 +1,6 @@
 mod nbody;
 
-use crate::vectors::Vector2;
+use super::vector2::Vector2;
 pub use nbody::NBodySystem;
 
 #[derive(Clone)]

@@ -1,4 +1,4 @@
-use crate::vectors::Vector2;
+use super::vector2::Vector2;
 
 const G: f64 = 1.0;
 

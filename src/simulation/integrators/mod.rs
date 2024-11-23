@@ -3,7 +3,7 @@ mod euler_cromer;
 mod leapfrog;
 mod rk4;
 
-use crate::systems::MechanicalSystem;
+use super::systems::MechanicalSystem;
 pub use euler::EulerIntegrator;
 pub use euler_cromer::EulerCromerIntegrator;
 pub use leapfrog::LeapfrogIntegrator;

@@ -1,28 +1,8 @@
-use crate::{
-    integrators::Integrator,
-    rendering::Window,
+use super::{
     systems::{MechanicalSystem, NBodySystem},
+    Simulation,
 };
-
-pub struct Simulation<System: MechanicalSystem> {
-    system: System,
-    integrator: Box<dyn Integrator<System>>,
-    dt: f64,
-}
-
-impl<System: MechanicalSystem> Simulation<System> {
-    pub fn new(system: System, integrator: Box<dyn Integrator<System>>, dt: f64) -> Self {
-        Self {
-            system,
-            integrator,
-            dt,
-        }
-    }
-
-    pub fn update(&mut self) {
-        self.integrator.step(&mut self.system, self.dt);
-    }
-}
+use crate::rendering::Window;
 
 pub trait Render {
     fn render(&self, window: &mut Window);

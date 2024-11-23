@@ -1,7 +1,7 @@
 use super::{Coordinates, MechanicalSystem};
-use crate::{
+use crate::simulation::{
     physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
-    vectors::Vector2,
+    vector2::Vector2,
 };
 
 #[derive(Default)]
