@@ -1,8 +1,7 @@
 use simulator_rs::{
-    rendering::Window,
+    rendering::WindowRenderer,
     simulation::{
-        integrators::{Integrator, LeapfrogIntegrator},
-        render::Render,
+        integrators::LeapfrogIntegrator,
         systems::{NBodySystem, System},
         Simulation,
     },
@@ -27,25 +26,25 @@ fn main() {
         coord.position.y += DEFAULT_WINDOW_HEIGHT as f64 / 2.0;
     });
 
-    // Initialize an integrator
-    let integrator: Box<dyn Integrator<NBodySystem>> = Box::new(LeapfrogIntegrator);
+    // Initialise an integrator
+    let integrator = LeapfrogIntegrator;
+
+    // Initialise a renderer
+    let mut renderer = WindowRenderer::new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
     // Create the main simulation state
     let dt: f64 = 0.5;
     let mut simulation = Simulation::new(system, integrator, dt);
 
-    // Initialize the window
-    let mut window = Window::new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-
     // Run the simulation loop
-    while window.update() {
+    while renderer.is_window_open() {
         let start_time = Instant::now();
 
         // Update simulation
         simulation.update();
 
         // Render simulation
-        simulation.render(&mut window);
+        simulation.render(&mut renderer);
 
         // Control simulation speed
         let frame_time = Instant::now().duration_since(start_time);

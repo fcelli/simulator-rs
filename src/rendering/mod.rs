@@ -1,3 +1,8 @@
-mod window;
+mod window_renderer;
 
-pub use window::Window;
+use crate::simulation::systems::System;
+pub use window_renderer::WindowRenderer;
+
+pub trait Renderer<S: System> {
+    fn render(&mut self, system: &S);
+}
