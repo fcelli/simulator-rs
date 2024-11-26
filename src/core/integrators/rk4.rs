@@ -1,5 +1,5 @@
 use super::Integrator;
-use crate::simulation::systems::{Coordinates, System};
+use crate::core::systems::{Coordinates, System};
 
 /// Runge-Kutta integrator.
 ///

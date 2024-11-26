@@ -1,2 +1,2 @@
-pub mod rendering;
-pub mod simulation;
+pub mod core;
+pub mod graphics;

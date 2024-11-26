@@ -1,5 +1,5 @@
 use super::{Coordinates, System};
-use crate::simulation::{
+use crate::core::{
     physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
     vector2::Vector2,
 };

@@ -1,10 +1,10 @@
 use simulator_rs::{
-    rendering::WindowRenderer,
-    simulation::{
+    core::{
         integrators::LeapfrogIntegrator,
         systems::{NBodySystem, System},
         Simulation,
     },
+    graphics::WindowRenderer,
 };
 use std::time::{Duration, Instant};
 

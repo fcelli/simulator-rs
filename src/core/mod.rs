@@ -3,10 +3,9 @@ pub mod physics;
 pub mod systems;
 pub mod vector2;
 
+use crate::graphics::Renderer;
 use integrators::Integrator;
 use systems::System;
-
-use crate::rendering::Renderer;
 
 pub struct Simulation<S: System, I: Integrator<S>> {
     system: S,

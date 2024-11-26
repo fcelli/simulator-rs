@@ -1,5 +1,5 @@
 use super::Renderer;
-use crate::simulation::systems::{NBodySystem, System};
+use crate::core::systems::{NBodySystem, System};
 use minifb::{Window, WindowOptions};
 
 pub struct WindowRenderer {
@@ -9,18 +9,10 @@ pub struct WindowRenderer {
 
 impl WindowRenderer {
     pub fn new(width: usize, height: usize) -> Self {
-        let window = Window::new(
-            "simulator-rs",
-            width,
-            height,
-            WindowOptions {
-                resize: true,
-                ..Default::default()
-            },
-        )
-        .unwrap_or_else(|e| {
-            panic!("{}", e);
-        });
+        let window = Window::new("simulator-rs", width, height, WindowOptions::default())
+            .unwrap_or_else(|e| {
+                panic!("{}", e);
+            });
         let buffer = vec![0; width * height];
         Self { window, buffer }
     }
