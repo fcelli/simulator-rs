@@ -1,7 +1,8 @@
-mod nbody;
+pub mod integrators;
+pub mod physics;
+pub mod vector2;
 
-use super::vector2::Vector2;
-pub use nbody::NBodySystem;
+use vector2::Vector2;
 
 #[derive(Clone)]
 pub struct Coordinates {

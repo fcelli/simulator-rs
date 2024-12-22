@@ -1,11 +1,6 @@
-use simulator_rs::{
-    core::{
-        integrators::LeapfrogIntegrator,
-        systems::{NBodySystem, System},
-        Simulation,
-    },
-    graphics::WindowRenderer,
-};
+use core::{integrators::LeapfrogIntegrator, System};
+use graphics::renderers::WindowRenderer;
+use simulations::{systems::NBodySystem, Simulation};
 use std::time::{Duration, Instant};
 
 const DEFAULT_WINDOW_WIDTH: usize = 800;
