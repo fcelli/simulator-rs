@@ -1,7 +1,8 @@
-mod nbody;
+pub mod integrators;
+pub mod physics;
+pub mod vector2;
 
-use crate::vectors::Vector2;
-pub use nbody::NBodySystem;
+use vector2::Vector2;
 
 #[derive(Clone)]
 pub struct Coordinates {
@@ -15,7 +16,7 @@ impl Coordinates {
     }
 }
 
-pub trait MechanicalSystem {
+pub trait System {
     fn get_coordinates(&self) -> &Vec<Coordinates>;
     fn get_coordinates_mut(&mut self) -> &mut Vec<Coordinates>;
     fn calculate_accelerations(&self) -> Vec<Vector2>;

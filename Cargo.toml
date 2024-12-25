@@ -1,10 +1,8 @@
-[package]
-name = "simulator-rs"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
 
-[dependencies]
-ggez = "0.9.3"
-
-[dev-dependencies]
-approx = "0.5.1"
+members = [
+    "core",
+    "graphics",
+    "simulations",
+]

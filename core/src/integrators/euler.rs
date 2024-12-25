@@ -1,5 +1,5 @@
 use super::Integrator;
-use crate::{systems::MechanicalSystem, vectors::Vector2};
+use crate::{vector2::Vector2, System};
 
 /// Euler integrator.
 ///
@@ -9,19 +9,14 @@ use crate::{systems::MechanicalSystem, vectors::Vector2};
 pub struct EulerIntegrator;
 
 impl EulerIntegrator {
-    fn update_positions<System: MechanicalSystem>(&self, system: &mut System, dt: f64) {
+    fn update_positions<S: System>(&self, system: &mut S, dt: f64) {
         system
             .get_coordinates_mut()
             .iter_mut()
             .for_each(|coord| coord.position += &coord.velocity * dt);
     }
 
-    fn update_velocities<System: MechanicalSystem>(
-        &self,
-        system: &mut System,
-        accelerations: &[Vector2],
-        dt: f64,
-    ) {
+    fn update_velocities<S: System>(&self, system: &mut S, accelerations: &[Vector2], dt: f64) {
         system
             .get_coordinates_mut()
             .iter_mut()
@@ -30,8 +25,8 @@ impl EulerIntegrator {
     }
 }
 
-impl<System: MechanicalSystem> Integrator<System> for EulerIntegrator {
-    fn step(&self, system: &mut System, dt: f64) {
+impl<S: System> Integrator<S> for EulerIntegrator {
+    fn step(&self, system: &mut S, dt: f64) {
         let accelerations = system.calculate_accelerations();
         self.update_positions(system, dt);
         self.update_velocities(system, &accelerations, dt);

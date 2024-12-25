@@ -1,5 +1,5 @@
 use super::Integrator;
-use crate::{systems::MechanicalSystem, vectors::Vector2};
+use crate::{vector2::Vector2, System};
 
 /// Leapfrog integrator.
 ///
@@ -11,19 +11,14 @@ use crate::{systems::MechanicalSystem, vectors::Vector2};
 pub struct LeapfrogIntegrator;
 
 impl LeapfrogIntegrator {
-    fn update_positions<System: MechanicalSystem>(&self, system: &mut System, dt: f64) {
+    fn update_positions<S: System>(&self, system: &mut S, dt: f64) {
         system
             .get_coordinates_mut()
             .iter_mut()
             .for_each(|coord| coord.position += &coord.velocity * dt);
     }
 
-    fn update_velocities<System: MechanicalSystem>(
-        &self,
-        system: &mut System,
-        accelerations: &[Vector2],
-        dt: f64,
-    ) {
+    fn update_velocities<S: System>(&self, system: &mut S, accelerations: &[Vector2], dt: f64) {
         system
             .get_coordinates_mut()
             .iter_mut()
@@ -32,8 +27,8 @@ impl LeapfrogIntegrator {
     }
 }
 
-impl<System: MechanicalSystem> Integrator<System> for LeapfrogIntegrator {
-    fn step(&self, system: &mut System, dt: f64) {
+impl<S: System> Integrator<S> for LeapfrogIntegrator {
+    fn step(&self, system: &mut S, dt: f64) {
         let dt_div2 = dt / 2.0;
         let accelerations = system.calculate_accelerations();
         self.update_velocities(system, &accelerations, dt_div2);

@@ -1,5 +1,5 @@
 use super::Integrator;
-use crate::systems::{Coordinates, MechanicalSystem};
+use crate::{Coordinates, System};
 
 /// Runge-Kutta integrator.
 ///
@@ -9,7 +9,7 @@ use crate::systems::{Coordinates, MechanicalSystem};
 pub struct RK4Integrator;
 
 impl RK4Integrator {
-    fn derive<System: MechanicalSystem>(&self, system: &System) -> Vec<Coordinates> {
+    fn derive<S: System>(&self, system: &S) -> Vec<Coordinates> {
         let accelerations = system.calculate_accelerations();
         let coordinates = system.get_coordinates();
         coordinates
@@ -22,9 +22,9 @@ impl RK4Integrator {
             .collect()
     }
 
-    fn update<System: MechanicalSystem>(
+    fn update<S: System>(
         &self,
-        system: &mut System,
+        system: &mut S,
         initial: &[Coordinates],
         k: &[Coordinates],
         dt: f64,
@@ -41,8 +41,8 @@ impl RK4Integrator {
     }
 }
 
-impl<System: MechanicalSystem> Integrator<System> for RK4Integrator {
-    fn step(&self, system: &mut System, dt: f64) {
+impl<S: System> Integrator<S> for RK4Integrator {
+    fn step(&self, system: &mut S, dt: f64) {
         let initial = system.get_coordinates().clone();
         let dt_div2 = dt / 2.0;
         let dt_div6 = dt / 6.0;
