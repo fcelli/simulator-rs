@@ -1,9 +1,12 @@
 use core::{
     physics::{gravitational_force, gravitational_potential_energy, kinetic_energy},
     vector2::Vector2,
+    Coordinates, System,
 };
-use core::{Coordinates, System};
-use graphics::renderers::{Renderer, WindowRenderer};
+use graphics::{
+    primitives::{Circle, Drawable},
+    Renderable,
+};
 
 #[derive(Default)]
 pub struct NBodySystem {
@@ -64,26 +67,18 @@ impl System for NBodySystem {
     }
 }
 
-impl Renderer<NBodySystem> for WindowRenderer {
-    fn render(&mut self, system: &NBodySystem) {
-        // Clear the buffer
-        self.buffer.fill(0);
-
-        // Get window size
-        let (width, height) = self.window.get_size();
-
-        // Draw each body as a white pixel
-        for coord in system.get_coordinates() {
-            let x = coord.position.x as usize;
-            let y = coord.position.y as usize;
-            if x < width && y < height {
-                self.buffer[y * width + x] = 0xFFFFFF;
-            }
-        }
-
-        // Update window with buffer
-        self.window
-            .update_with_buffer(&self.buffer, width, height)
-            .unwrap();
+impl Renderable for NBodySystem {
+    fn get_drawables(&self) -> Vec<Box<dyn Drawable>> {
+        self.coordinates
+            .iter()
+            .map(|coord| {
+                Box::new(Circle::new(
+                    coord.position.x,
+                    coord.position.y,
+                    1.0,
+                    0xFFFFFF,
+                )) as Box<dyn Drawable>
+            })
+            .collect()
     }
 }

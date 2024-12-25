@@ -1,7 +1,6 @@
 use core::{integrators::LeapfrogIntegrator, System};
-use graphics::renderers::WindowRenderer;
+use graphics::window::WindowRenderer;
 use simulations::{systems::NBodySystem, Simulation};
-use std::time::{Duration, Instant};
 
 const DEFAULT_WINDOW_WIDTH: usize = 800;
 const DEFAULT_WINDOW_HEIGHT: usize = 600;
@@ -28,23 +27,9 @@ fn main() {
     let mut renderer = WindowRenderer::new(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
     // Create the main simulation state
-    let dt: f64 = 0.5;
+    let dt: f64 = 0.05;
     let mut simulation = Simulation::new(system, integrator, dt);
 
     // Run the simulation loop
-    while renderer.is_window_open() {
-        let start_time = Instant::now();
-
-        // Update simulation
-        simulation.update();
-
-        // Render simulation
-        simulation.render(&mut renderer);
-
-        // Control simulation speed
-        let frame_time = Instant::now().duration_since(start_time);
-        if frame_time < Duration::from_millis(16) {
-            std::thread::sleep(Duration::from_millis(16) - frame_time);
-        }
-    }
+    simulation.run(&mut renderer);
 }
